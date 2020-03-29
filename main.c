@@ -10,6 +10,7 @@
 #include <stdlib.h>
 
 const int PWM_pin = 12;
+const int max_temp = 45;
 
 void initFan(void);		//initialize the fan
 void startFan(void);		//start the fan
@@ -20,10 +21,10 @@ int main(void){
 	initFan();
 	double temp;
 	temp = getTemp();
-	if(temp > 40){
+	if(temp > max_temp){
 		startFan();
 	}
-	else if(temp <= 40){
+	else if(temp <= max_temp){
 		killFan();
 	}
 }
