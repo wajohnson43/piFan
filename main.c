@@ -28,18 +28,21 @@ int main(void){
 	init();
 	double temp, i, otherTemp;
 	temp = getTemp();
+
+	while(1){
+		FILE *f = fopen("temp", "r");
+		i = fscanf(f, "%lf", &otherTemp);
+		//printf("%lf\n", otherTemp);
 	
-	FILE *f = fopen("temp", "r");
-	i = fscanf(f, "%lf", &otherTemp);
-	//printf("%lf\n", otherTemp);
-
-	if(temp > max_temp || otherTemp > max_temp){
-		startFan();
+		if(temp > max_temp || otherTemp > max_temp){
+			startFan();
+		}
+		else if(temp <= max_temp && otherTemp <= max_temp){
+			killFan();
+		}
+		fclose(f);
+		delay(60000);
 	}
-	else if(temp <= max_temp && otherTemp <= max_temp){
-		killFan();
-	}
-
 	return 0;
 	
 }

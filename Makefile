@@ -6,7 +6,6 @@ sender: send_temp
 
 main: main.c
 	gcc -lwiringPi -o main main.c
-	sudo echo "* * * * * /home/pi/piFan/main" >> /var/spool/cron/crontabs/root
 
 read_pi: read_pi.c
 	gcc -o read_pi read_pi.c
