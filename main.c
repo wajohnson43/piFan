@@ -8,32 +8,48 @@
 #include <wiringPi.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <unistd.h>
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <string.h>
 
-const int PWM_pin = 12;
-const int max_temp = 45;
+#define PORT 8080
 
-void initFan(void);		//initialize the fan
+const int PWM_pin = 12;		//using GPIO pin numbering
+const int read_pin = 17;
+const int max_temp = 47;	//change this to change the temperature the fan comes on
+
+void init(void);		//initialize the fan
 void startFan(void);		//start the fan
 void killFan(void);		//kill the fan
 double getTemp(void);		//get the CPU's temperature
 
 int main(void){
-	initFan();
-	double temp;
+	init();
+	double temp, i, otherTemp;
 	temp = getTemp();
-	if(temp > max_temp){
+	
+	FILE *f = fopen("temp", "r");
+	i = fscanf(f, "%lf", &otherTemp);
+	//printf("%lf\n", otherTemp);
+
+	if(temp > max_temp || otherTemp > max_temp){
 		startFan();
 	}
-	else if(temp <= max_temp){
+	else if(temp <= max_temp && otherTemp <= max_temp){
 		killFan();
 	}
+
+	return 0;
+	
 }
 
-void initFan(void){
+void init(void){
 	if(wiringPiSetupGpio() == -1){
 		exit -1;
 	}
 	pinMode(PWM_pin, PWM_OUTPUT);
+	pinMode(read_pin, INPUT);
 }
 
 void startFan(void){
