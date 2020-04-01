@@ -17,7 +17,7 @@
 
 const int PWM_pin = 12;		//using GPIO pin numbering
 const int read_pin = 17;
-const int max_temp = 47;	//change this to change the temperature the fan comes on
+const int max_temp = 50;	//change this to change the temperature the fan comes on
 
 void init(void);		//initialize the fan
 void startFan(void);		//start the fan
@@ -26,25 +26,19 @@ double getTemp(void);		//get the CPU's temperature
 
 int main(void){
 	init();
-	double temp, i, otherTemp;
-	temp = getTemp();
-
+	double temp, i;
 	while(1){
-		FILE *f = fopen("temp", "r");
-		i = fscanf(f, "%lf", &otherTemp);
-		//printf("%lf\n", otherTemp);
-	
-		if(temp > max_temp || otherTemp > max_temp){
+		temp = getTemp();
+		if(temp > max_temp || digitalRead(read_pin)  == 1){
 			startFan();
+			delay(300000);
 		}
-		else if(temp <= max_temp && otherTemp <= max_temp){
+		else if(temp <= max_temp && digitalRead(read_pin) == 0){
 			killFan();
+			delay(60000);
 		}
-		fclose(f);
-		delay(60000);
 	}
 	return 0;
-	
 }
 
 void init(void){
