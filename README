@@ -7,3 +7,6 @@ A simple program to control a fan for a Raspberry Pi Cluster.
 IP addresses and maximum temperature have been hardcoded, and will need to be changed.
 
 Authentication and further scalability have not been considered.
+
+close sockets after you're done with them!
+
