@@ -1,4 +1,4 @@
-.PHONY: driver sender clean
+.PHONY: driver sender
 
 driver:  main
 
@@ -9,5 +9,5 @@ main: main.c
 	./main &
 	
 send_temp: send_temp.c
-	gcc -o send_temp send_temp.c
-	./send_temp 
+	gcc -lwiringPi -o send_temp send_temp.c
+	./send_temp &
