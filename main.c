@@ -5,6 +5,7 @@
  *			Must be run as root (PWM)
  */
 
+#include <cstdlib.h>
 #include <wiringPi.h>
 #include <stdio.h>
 #include <stdlib.h>
